@@ -22,6 +22,8 @@ function normalizeApiPokemon(pokemon) {
   const officialArt = pokemon.sprites?.other?.['official-artwork']?.front_default
   const sprite = officialArt || pokemon.sprites?.front_default || ''
 
+  const typeKeys = pokemon.types.map((slot) => slot.type.name)
+
   return {
     id: pokemon.id,
     name: titleCase(pokemon.name),
@@ -35,7 +37,40 @@ function normalizeApiPokemon(pokemon) {
       ATK: statValue(pokemon, 'attack'),
       DEF: statValue(pokemon, 'defense'),
     },
+    moves: getGen1MovesForTypes(typeKeys),
   }
+}
+
+function getGen1MovesForTypes(types) {
+  const moveMap = {
+    normal: ['Tackle', 'Body Slam', 'Take Down'],
+    fire: ['Ember', 'Flamethrower', 'Fire Spin'],
+    water: ['Water Gun', 'Bubble', 'Hydro Pump'],
+    electric: ['Thunder Shock', 'Thunderbolt', 'Thunder Wave'],
+    grass: ['Vine Whip', 'Razor Leaf', 'Solar Beam'],
+    ice: ['Ice Beam', 'Blizzard', 'Ice Punch'],
+    fighting: ['Karate Chop', 'Low Kick', 'Submission'],
+    poison: ['Poison Sting', 'Sludge', 'Toxic'],
+    ground: ['Mud-Slap', 'Earthquake', 'Dig'],
+    flying: ['Gust', 'Wing Attack', 'Sky Attack'],
+    psychic: ['Confusion', 'Psychic', 'Psybeam'],
+    bug: ['Leech Life', 'Pin Missile', 'Twinneedle'],
+    rock: ['Rock Throw', 'Rock Slide', 'Earthquake'],
+    ghost: ['Lick', 'Night Shade', 'Shadow Ball'],
+    dragon: ['Dragon Rage', 'Hyper Beam', 'Outrage'],
+    dark: ['Bite', 'Crunch', 'Night Slash'],
+    steel: ['Metal Claw', 'Iron Tail', 'Flash Cannon'],
+    fairy: ['Disarming Voice', 'Draining Kiss', 'Dazzling Gleam'],
+  }
+
+  for (const type of types) {
+    const normalized = type.toLowerCase()
+    if (moveMap[normalized]) {
+      return moveMap[normalized]
+    }
+  }
+
+  return ['Tackle', 'Quick Attack', 'Protect']
 }
 
 export async function loadFromPokeApi(query) {

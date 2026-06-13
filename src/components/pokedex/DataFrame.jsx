@@ -27,6 +27,20 @@ export default function DataFrame({ pokemon, query, onQueryChange, onPrev, onNex
         ))}
       </div>
 
+      <div className={styles.movesSection}>
+        <div className={styles.movesHeader}>
+          <span className={styles.subtitle}>Poderes</span>
+          <span className={styles.typeLabel}>{pokemon.types?.[0] ?? 'Normal'}</span>
+        </div>
+        <div className={styles.movesGrid}>
+          {pokemon.moves?.map((move) => (
+            <span key={move} className={styles.moveChip}>
+              {move}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <form className={styles.searchForm} onSubmit={onScan}>
         <label className={styles.searchInput}>
           <span className="sr-only">Buscar Pokémon</span>
