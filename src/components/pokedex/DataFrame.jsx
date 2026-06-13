@@ -1,5 +1,6 @@
 import SearchBar from './SearchBar'
 import StatRow from './StatRow'
+import MovesPanel from './MovesPanel'
 import styles from './DataFrame.module.css'
 
 const visibleStats = ['HP', 'ATK', 'DEF']
@@ -28,22 +29,11 @@ export default function DataFrame({ pokemon, query, onQueryChange, onPrev, onNex
         ))}
       </div>
 
-      <div className={styles.movesSection}>
-        <div className={styles.movesHeader}>
-          <span className={styles.subtitle}>Poderes</span>
-          <span className={styles.typeLabel}>{pokemon.types?.[0] ?? 'Normal'}</span>
-        </div>
-        <div className={styles.movesGrid}>
-          {pokemon.moves?.map((move) => (
-            <span key={move} className={styles.moveChip}>
-              {move}
-            </span>
-          ))}
-        </div>
-      </div>
+      <MovesPanel moves={pokemon.moves ?? []} type={pokemon.types?.[0] ?? 'Normal'} />
 
       <SearchBar query={query} onQueryChange={onQueryChange} onScan={onScan} isLoading={isLoading} />
 
       {error ? <p className={styles.error}>{error}</p> : null}
+    </section>
   )
 }
