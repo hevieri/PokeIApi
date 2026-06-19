@@ -15,15 +15,18 @@
 import DisplayFrame from './DisplayFrame'
 import DataFrame from './DataFrame'
 import usePokemon from '../../hooks/usePokemon.js'
+import useCatches from '../../hooks/useCatches.js'
 import styles from './Pokedex.module.css'
 
-export default function Pokedex() {
-  const { pokemon, query, setQuery, isLoading, error, handlePrev, handleNext, handleScan } = usePokemon()
+export default function Pokedex({ initialPokemonId, onGoCare }) {
+  const { catches } = useCatches()
+  const validIds = catches.length > 0 ? catches : null
+  const { pokemon, query, setQuery, isLoading, error, handlePrev, handleNext, handleScan } = usePokemon(initialPokemonId, validIds)
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.pokedex}>
-        <DisplayFrame pokemon={pokemon} status={isLoading ? 'Cargando' : 'Listo'} />
+        <DisplayFrame pokemon={pokemon} status={isLoading ? 'Cargando' : 'Listo'} onGoCare={onGoCare} catchesLength={catches.length} />
         <DataFrame
           pokemon={pokemon}
           query={query}
@@ -31,6 +34,7 @@ export default function Pokedex() {
           onPrev={handlePrev}
           onNext={handleNext}
           onScan={handleScan}
+          isLoading={isLoading}
           error={error}
         />
       </div>

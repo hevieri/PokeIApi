@@ -25,7 +25,7 @@ import styles from './DataFrame.module.css'
 
 const visibleStats = ['HP', 'ATK', 'DEF']
 
-export default function DataFrame({ pokemon, query, onQueryChange, onPrev, onNext, onScan, error }) {
+export default function DataFrame({ pokemon, query, onQueryChange, onPrev, onNext, onScan, isLoading, error }) {
   const stats = pokemon?.stats
   const primaryType = pokemon?.types?.[0] ?? 'Normal'
 
@@ -54,7 +54,7 @@ export default function DataFrame({ pokemon, query, onQueryChange, onPrev, onNex
 
       <MovesPanel moves={pokemon?.moves ?? []} type={primaryType} />
 
-      <SearchBar query={query} onQueryChange={onQueryChange} onScan={onScan} />
+      <SearchBar query={query} onQueryChange={onQueryChange} onScan={onScan} isLoading={isLoading} />
 
       {error ? <p className={styles.error}>{error}</p> : null}
     </section>

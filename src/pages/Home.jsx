@@ -10,25 +10,31 @@
  *   - onGoStats {function}: Callback para cambiar a la página Stats.
  */
 
+import NavButton from '../components/NavButton.jsx'
+
 export default function Home({ onGoStats }) {
   return (
-    <section className="flex flex-col items-center gap-10 pt-6 sm:pt-10">
+    <section className="flex flex-col items-center gap-10 pt-32 sm:pt-36 min-h-[calc(100vh-8rem)]">
       <div className="text-center max-w-md">
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-          Bienvenido
-        </h2>
+        <div className="mb-2">
+          <h1
+            className="font-display text-[2.8rem] sm:text-[3.8rem] lg:text-[4.8rem] leading-none tracking-[0.06em] text-pk-yellow"
+            style={{
+              textShadow: '0 0 0 #2a6bb6, 2px 2px 0 #2a6bb6, 4px 4px 0 #2a6bb6, 6px 6px 0 #1a4a8a, 8px 8px 0 #1a4a8a, 10px 10px 0 #0f3460, 0 0 30px rgba(42,107,182,0.4)',
+            }}
+          >
+            POKÉAPPI
+          </h1>
+        </div>
+        <p className="text-xs uppercase tracking-[0.35em] text-pokeball-red font-semibold">Bienvenido</p>
         <p className="mt-4 text-sm text-slate-500 leading-relaxed">
           Explora datos de Pokémon, busca por nombre o ID y consulta las estadísticas reales de la PokéAPI.
         </p>
       </div>
 
-      <button
-        type="button"
-        onClick={onGoStats}
-        className="rounded-full bg-pokeball-red px-8 py-3.5 text-sm font-bold text-white tracking-wider uppercase transition hover:bg-red-600 hover:scale-105 active:scale-100"
-      >
-        Ir a estadísticas
-      </button>
+      <NavButton onClick={onGoStats}>
+        Entrar
+      </NavButton>
     </section>
   )
 }

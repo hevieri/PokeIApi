@@ -1,0 +1,188 @@
+.card {
+  max-width: 360px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 50%), #30639a;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--color-pokeball-red) 0%, var(--color-pokeball-red) 47%, #222 47%, #222 53%, #f1f5f9 53%, #f1f5f9 100%);
+  border: 3px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.avatar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 2px solid #222;
+}
+
+.avatar::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #222;
+}
+
+.avatarIcon {
+  font-size: 1.5rem;
+  z-index: 1;
+  opacity: 0;
+}
+
+.name {
+  color: #f1f5f9;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.statsRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.statValue {
+  color: #f1f5f9;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.statLabel {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.bar {
+  width: 100%;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6, #a855f7);
+  transition: width 0.5s ease;
+}
+
+.pct {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.hint {
+  color: #facc15;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.favSection {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(28%, 220px);
+  pointer-events: none;
+}
+
+.favSprite {
+  width: 100%;
+  height: auto;
+  image-rendering: auto;
+  filter: drop-shadow(0 0 24px rgba(250, 204, 21, 0.25));
+}
+
+.favName {
+  color: #facc15;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: -0.5rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 700px) {
+  .favSection {
+    width: min(25%, 160px);
+    bottom: 0.5rem;
+    left: 0.5rem;
+  }
+  .favName {
+    font-size: 0.6rem;
+  }
+}
+
+.cardsRow {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 780px;
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .cardsRow {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.combatCard {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 50%), #5b2d6b;
+}
+
+.combatAvatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  border: 3px solid #5b2d6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.barFillCombat {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  transition: width 0.5s ease;
+}

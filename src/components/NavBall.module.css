@@ -1,0 +1,135 @@
+.wrapper {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.wrapperOpen {
+  gap: 0.5rem;
+}
+
+.ball {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: 2px solid #222;
+  background: linear-gradient(180deg, var(--color-pokeball-red) 0%, var(--color-pokeball-red) 47%, #222 47%, #222 53%, #f1f5f9 53%, #f1f5f9 100%);
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  flex-shrink: 0;
+  transition: box-shadow 0.3s, transform 0.15s;
+}
+
+.ball:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.ball:active {
+  transform: scale(0.95);
+}
+
+.ball::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 2px solid #222;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ball::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: #222;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ballOpen {
+  animation: rollIn 0.5s ease-out;
+  box-shadow: 0 0 20px 6px rgba(255, 204, 0, 0.3);
+}
+
+@keyframes rollIn {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.item {
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
+  border-radius: 2rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  animation: emerge 0.35s ease-out both;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.item:hover {
+  background: #f1f5f9;
+  transform: scale(1.05);
+}
+
+.itemActive {
+  background: #e0f2fe;
+  color: #0369a1;
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+.itemActive:hover {
+  background: #bae6fd;
+  transform: scale(1.05);
+}
+
+.item:active {
+  transform: scale(0.95);
+}
+
+@keyframes emerge {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}

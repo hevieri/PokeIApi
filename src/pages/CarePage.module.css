@@ -1,0 +1,61 @@
+.page {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0f172a 0%, #020617 100%);
+  padding: 2rem;
+}
+
+.backBtn {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+.sprite {
+  max-width: min(80vw, 80vh, 500px);
+  width: 100%;
+  height: auto;
+  image-rendering: auto;
+  filter: drop-shadow(0 0 48px rgba(250, 204, 21, 0.2)) drop-shadow(0 0 96px rgba(250, 204, 21, 0.1));
+}
+
+.name {
+  margin-top: 1rem;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #facc15;
+  letter-spacing: 0.08em;
+  text-transform: capitalize;
+  text-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+}
+
+@media (max-width: 480px) {
+  .sprite {
+    max-width: 95vw;
+  }
+  .backBtn {
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+  }
+}

@@ -18,8 +18,11 @@ import styles from './DisplayFrame.module.css'
 import SpriteSection from './SpriteSection'
 import PokemonInfo from './PokemonInfo'
 import { getTypeConfig } from './typeConfig'
+import useCared from '../../hooks/useCared'
 
-export default function DisplayFrame({ pokemon, status }) {
+export default function DisplayFrame({ pokemon, status, onGoCare, catchesLength }) {
+  const { careDisabled, useCare } = useCared(catchesLength)
+
   if (!pokemon) {
     return (
       <section className={styles.displayFrame}>
@@ -63,6 +66,14 @@ export default function DisplayFrame({ pokemon, status }) {
           )
         })}
       </div>
+
+      <button
+        className={`${styles.caredBtn} ${careDisabled ? styles.caredBtnDisabled : ''}`}
+        disabled={careDisabled}
+        onClick={() => { useCare(); onGoCare(pokemon.id) }}
+      >
+        {careDisabled ? '⏳ Agotado' : '🤝 Cuidar Pokémon'}
+      </button>
     </section>
   )
 }

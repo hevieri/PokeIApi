@@ -1,48 +1,64 @@
 /**
  * App
  *
- * Componente raíz de la aplicación. Maneja la navegación entre la
- * página de inicio (Home) y la página de estadísticas (Stats) usando
- * un estado local simple (page). Renderiza un encabezado global común
- * con el título "Pokeappi" y una breve descripción.
+ * Componente raíz de la aplicación. Maneja la navegación entre las
+ * páginas usando un estado local simple (page). Incluye el NavBall
+ * como navegación flotante. El estado pendingPokemonId permite
+ * navegar a un Pokémon específico desde otras páginas.
  */
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Home from './pages/Home.jsx'
+import TrainerPage from './pages/TrainerPage.jsx'
+import WelcomePage from './pages/WelcomePage.jsx'
+import GiftPage from './pages/GiftPage.jsx'
 import Stats from './pages/Stats.jsx'
+import PokedexPage from './pages/PokedexPage.jsx'
+import About from './pages/About.jsx'
+import CarePage from './pages/CarePage.jsx'
+import NavBall from './components/NavBall.jsx'
 
 export default function App() {
   const [page, setPage] = useState('home')
+  const [pendingPokemonId, setPendingPokemonId] = useState(null)
+
+  const goToGift = useCallback(() => setPage('gift'), [])
+  const goToWelcome = useCallback(() => setPage('welcome'), [])
+  const goToStats = useCallback((id) => {
+    setPendingPokemonId(id ?? null)
+    setPage('stats')
+  }, [])
+  const goToCare = useCallback((id) => {
+    setPendingPokemonId(id ?? null)
+    setPage('care')
+  }, [])
+
+  const renderPage = () => {
+    switch (page) {
+      case 'trainer':
+        return <TrainerPage onGoGift={goToGift} onGoWelcome={goToWelcome} />
+      case 'welcome':
+        return <WelcomePage onComplete={() => setPage('trainer')} />
+      case 'gift':
+        return <GiftPage onComplete={() => setPage('trainer')} />
+      case 'stats':
+        return <Stats key={pendingPokemonId ?? 'default'} initialPokemonId={pendingPokemonId} onGoCare={goToCare} />
+      case 'care':
+        return <CarePage pokemonId={pendingPokemonId} onBack={() => setPage('stats')} />
+      case 'pokedex':
+        return <PokedexPage onGoStats={goToStats} />
+      case 'about':
+        return <About />
+      case 'home':
+      default:
+        return <Home onGoStats={() => setPage('trainer')} />
+    }
+  }
 
   return (
-    <main className="min-h-screen px-6 sm:px-8 lg:px-10 py-6 sm:py-8 lg:py-10">
-        <header className="mb-12 sm:mb-16 text-center">
-          <p className="text-xs uppercase tracking-[0.35em] text-pokeball-red">Pokédex</p>
-          <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
-            Pokeappi
-          </h1>
-          <p className="mx-auto mt-3 max-w-lg text-sm text-slate-500 leading-relaxed">
-            Explora datos de Pokémon y consulta sus estadísticas con datos reales de PokéAPI.
-          </p>
-        </header>
-
-        {page === 'home' ? (
-          <Home onGoStats={() => setPage('stats')} />
-        ) : (
-          <div className="space-y-6">
-            <Stats />
-            <div className="flex justify-center">
-              <button
-                type="button"
-                onClick={() => setPage('home')}
-                className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:border-pokeball-red/40 hover:bg-pokeball-red/5 hover:text-pokeball-red"
-              >
-                <span className="inline-block transition group-hover:-translate-x-0.5">{'\u2190'}</span>
-                Volver al inicio
-              </button>
-            </div>
-          </div>
-        )}
+    <main className="min-h-screen px-6 sm:px-8 lg:px-10 py-6 sm:py-8 lg:py-10 pb-20">
+      {renderPage()}
+      <NavBall currentPage={page} onNavigate={setPage} />
     </main>
   )
 }

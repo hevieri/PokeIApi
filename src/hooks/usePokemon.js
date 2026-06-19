@@ -1,25 +1,11 @@
-/**
- * usePokemon
- *
- * Hook personalizado que gestiona todo el estado relacionado con la
- * carga de datos de Pokémon desde la PokéAPI. Se encarga de:
- *   - Mantener el ID del Pokémon activo y permitir navegación (prev/next)
- *   - Ejecutar la búsqueda por nombre o ID mediante el formulario
- *   - Gestionar estados de carga (isLoading) y error
- *   - Actualizar el Pokémon activo cada vez que cambia activeId vía useEffect
- *
- * La función clampPokemonId asegura que el ID nunca salga del rango
- * 1..maxPokemonId (1010), con comportamiento wrap-around.
- *
- * Returns:
- *   { pokemon, query, setQuery, isLoading, error, handlePrev, handleNext, handleScan }
- */
+import { useEffect, useState, useCallback } from 'react'
+import { loadFromPokeApi } from '../components/pokedex/pokedexData.js'
 
-import { useEffect, useState } from 'react'
-import { clampPokemonId, loadFromPokeApi } from '../components/pokedex/pokedexData.js'
-
-export default function usePokemon(initialId = 1) {
-  const [activeId, setActiveId] = useState(initialId)
+export default function usePokemon(initialId = 1, validIds = null) {
+  const startId = validIds && validIds.length > 0 && (!initialId || !validIds.includes(initialId))
+    ? validIds[0]
+    : (initialId ?? 1)
+  const [activeId, setActiveId] = useState(startId)
   const [pokemon, setPokemon] = useState(null)
   const [query, setQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -33,7 +19,7 @@ export default function usePokemon(initialId = 1) {
       try {
         const remotePokemon = await loadFromPokeApi(activeId)
         setPokemon(remotePokemon)
-      } catch (err) {
+      } catch {
         setPokemon(null)
         setError('No se pudo cargar el Pokémon.')
       } finally {
@@ -44,22 +30,27 @@ export default function usePokemon(initialId = 1) {
     loadCurrentPokemon()
   }, [activeId])
 
-  const handlePrev = () => {
-    setActiveId((prevId) => clampPokemonId(prevId - 1))
+  const navigate = useCallback((dir) => {
     setQuery('')
-  }
+    if (!validIds || validIds.length === 0) {
+      setActiveId(prev => Math.max(1, prev + dir))
+      return
+    }
+    setActiveId(prev => {
+      const idx = validIds.indexOf(prev)
+      if (idx === -1) return validIds[0]
+      const next = (idx + dir + validIds.length) % validIds.length
+      return validIds[next]
+    })
+  }, [validIds])
 
-  const handleNext = () => {
-    setActiveId((prevId) => clampPokemonId(prevId + 1))
-    setQuery('')
-  }
+  const handlePrev = useCallback(() => navigate(-1), [navigate])
+  const handleNext = useCallback(() => navigate(1), [navigate])
 
   const handleScan = async (event) => {
     event.preventDefault()
     const cleanQuery = query.trim()
-    if (!cleanQuery) {
-      return
-    }
+    if (!cleanQuery) return
 
     setIsLoading(true)
     setError('')
@@ -68,7 +59,7 @@ export default function usePokemon(initialId = 1) {
       const remotePokemon = await loadFromPokeApi(cleanQuery)
       setPokemon(remotePokemon)
       setActiveId(remotePokemon.id)
-    } catch (err) {
+    } catch {
       setError('Pokémon no encontrado. Prueba con nombre o ID válido.')
     } finally {
       setIsLoading(false)
